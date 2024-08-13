@@ -1,14 +1,19 @@
-from fastapi import FastAPI, APIRouter
+from fastapi import FastAPI
+from dotenv import dotenv_values
+from domains.users.router import users_router
+from fastapi.middleware.cors import CORSMiddleware
+
+config = dotenv_values(".env")
 
 
-app = FastAPI()
+app = FastAPI(root_path="/api/v1")
 
-router = APIRouter()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-
-@router.get("/ping")
-def ping():
-    return {"ping": "pong"}
-
-
-app.include_router(router, prefix="/api/v1")
+app.include_router(users_router)
