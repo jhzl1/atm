@@ -13,7 +13,7 @@ class AccountsService:
 
     async def create_account(self):
         new_account = Account(
-            account_number=random.randint(10000, 99999),
+            account=random.randint(10000, 99999),
             balance=0.0,
             currency="COP",
             created_at=datetime.now(),

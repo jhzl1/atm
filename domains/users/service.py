@@ -26,7 +26,7 @@ class UserService:
         user_exists = await self.user_repository.get_by_email(user_email)
 
         if user_exists is True:
-            raise HTTPException(status_code=409, detail="User already exists")
+            raise HTTPException(status_code=400, detail="User already exists")
 
         account_id = await self.accounts_service.create_account()
 

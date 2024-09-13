@@ -6,7 +6,7 @@ from bson import ObjectId
 
 class Account(BaseModel):
     currency: Literal["USD", "COP"]
-    account_number: int
+    account: int
     balance: float
     created_at: datetime
     updated_at: datetime

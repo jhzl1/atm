@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from dotenv import dotenv_values
 from domains.users.router import users_router
+from domains.transactions.router import transactions_router
 from fastapi.middleware.cors import CORSMiddleware
 
 config = dotenv_values(".env")
@@ -17,3 +18,4 @@ app.add_middleware(
 )
 
 app.include_router(users_router)
+app.include_router(transactions_router)

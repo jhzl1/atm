@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from .schemas import UserCreate
 from .service import UserService
 
-users_router = APIRouter(prefix="/users")
+users_router = APIRouter(prefix="/users", tags=["Users"])
 
 
 @users_router.post("", status_code=201)
