@@ -37,9 +37,3 @@ class AccountsRepository:
             {"account": account_number}, {"$set": account.model_dump()}
         )
         return updated_account.upserted_id
-
-    # async def get_by_email(self, user_email: str) -> User:
-    #     user = await self.db.find_one({"email": user_email})
-    #     if user:
-    #         user["_id"] = str(user["_id"])
-    #     return User(**user) if user else None

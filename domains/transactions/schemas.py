@@ -1,13 +1,20 @@
+from enum import Enum
 from pydantic import BaseModel, Field, field_validator
-from typing import Optional, Literal
+from typing import Optional
 from datetime import datetime
 from bson import ObjectId
+
+
+class TransactionType(str, Enum):
+    DEPOSIT = "DEPOSIT"
+    WITHDRAW = "WITHDRAW"
+    TRANSFER = "TRANSFER"
 
 
 class TransactionCreate(BaseModel):
     account: int
     amount: float
-    transaction_type: Literal["deposit", "withdraw", "transfer"]
+    type: TransactionType
     description: Optional[str] = None
     beneficiary_account: Optional[int] = None
 
@@ -21,11 +28,11 @@ class TransactionCreate(BaseModel):
     @field_validator("beneficiary_account", mode="before")
     @classmethod
     def check_beneficiary_account_id(cls, v, values):
-        if values.data["transaction_type"] == "transfer" and not v:
+        if values.data["type"] == "TRANSFER" and not v:
             raise ValueError(
                 "beneficiary_account is required for transfer transactions"
             )
-        if values.data["transaction_type"] != "transfer" and v:
+        if values.data["type"] != "TRANSFER" and v:
             raise ValueError(
                 "beneficiary_account should only be set for transfer transactions"
             )
@@ -33,10 +40,13 @@ class TransactionCreate(BaseModel):
 
 
 class Transaction(TransactionCreate):
-    id: Optional[str] = Field(default=None, alias="_id")
     created_at: datetime
     updated_at: datetime
 
     class Config:
         arbitrary_types_allowed = True
         json_encoders = {ObjectId: str}
+
+
+class TransactionCreated(Transaction):
+    id: Optional[str] = Field(alias="_id")
